@@ -16,14 +16,6 @@
 
 package com.android.example.github.ui.user;
 
-import com.android.example.github.R;
-import com.android.example.github.binding.FragmentDataBindingComponent;
-import com.android.example.github.databinding.UserFragmentBinding;
-import com.android.example.github.di.Injectable;
-import com.android.example.github.ui.common.NavigationController;
-import com.android.example.github.ui.common.RepoListAdapter;
-import com.android.example.github.util.AutoClearedValue;
-
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -36,7 +28,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.example.github.R;
+import com.android.example.github.binding.FragmentDataBindingComponent;
+import com.android.example.github.databinding.UserFragmentBinding;
+import com.android.example.github.di.Injectable;
+import com.android.example.github.ui.common.NavigationController;
+import com.android.example.github.ui.common.RepoListAdapter;
+import com.android.example.github.util.AutoClearedValue;
+
 import javax.inject.Inject;
+import javax.inject.Named;
+
+import dagger.Module;
+import dagger.Provides;
 
 public class UserFragment extends LifecycleFragment implements Injectable {
     private static final String LOGIN_KEY = "login";
@@ -98,5 +102,18 @@ public class UserFragment extends LifecycleFragment implements Injectable {
                 adapter.get().replace(repos.data);
             }
         });
+    }
+
+    private String providesLogin() {
+        return getArguments().getString(LOGIN_KEY);
+    }
+
+    @Module
+    public static abstract class UserFragmentModule {
+        @Named("login")
+        @Provides
+        static String bindLogin(UserFragment userFragment) {
+            return userFragment.providesLogin();
+        }
     }
 }

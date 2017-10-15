@@ -31,6 +31,6 @@ public abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract UserFragment contributeUserFragment();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = UserFragment.UserFragmentModule.class)
     abstract SearchFragment contributeSearchFragment();
 }
